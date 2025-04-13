@@ -1,0 +1,10 @@
+# IDE settings
+.vscode/
+.idea/
+
+# Build output
+target/
+*.class
+
+# Sensitive files
+src/main/resources/application.properties
