@@ -1,4 +1,4 @@
-package com.warroom.poker.WebSocket;
+package com.warroom.poker.websocket;
 
 import com.game.GameLogic;
 import com.warroom.poker.model.GamePlayer;

@@ -4,7 +4,7 @@ import com.warroom.poker.repository.PlayerRepository;
 import org.springframework.web.bind.annotation.*;
 
 
-public class auth {
+public class Auth {
    // public static String register(@RequestParam String username, @RequestParam String password)
     {
         
