@@ -20,7 +20,7 @@ public class GamePlayer
     @Column(name = "player_id")
     private UUID playerId;
     @ElementCollection
-    private ArrayList<Card> hand;
+    private ArrayList<String> handStrings;
     @Transient
     private UserProfile userProfile;
     private int chips;
@@ -32,20 +32,20 @@ public class GamePlayer
     
     public GamePlayer(UserProfile userProfile)
     {
-      this.hand = new ArrayList<>();
+      this.handStrings = new ArrayList<String>();
       this.handRank = HandRank.HIGH_CARD;
       this.currentBet = 0;
       this.playerId = userProfile.getPlayerId();
       this.userName = userProfile.getUserName();
       this.chips = userProfile.getChips();
     }
-    public void addCard(Card card)
+    public void addCard(String card)
     {
-      hand.add(card);
+      handStrings.add(card);
     }
-    public ArrayList<Card> getHand()
+    public ArrayList<String> getHand()
     {
-      return hand;
+      return handStrings;
     }
     public HandRank getHandRank()
     {

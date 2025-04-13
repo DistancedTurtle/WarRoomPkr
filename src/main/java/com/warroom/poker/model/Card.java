@@ -54,6 +54,17 @@ public class Card
         
   }
 
+  public static Card fromString(String cardString) {
+        if (cardString == null || cardString.length() != 2) {
+            throw new IllegalArgumentException("Invalid card string: " + cardString);
+        }
+
+        String value = cardString.substring(0, 1);
+        String suit = cardString.substring(1);
+
+        return new Card(suit, value, cardImagePath);
+    }
+
   public static final Comparator<Card> byValue = new Comparator<Card>() {
       public int compare(Card c1, Card c2) {
           return c1.getValueInt() - c2.getValueInt();
