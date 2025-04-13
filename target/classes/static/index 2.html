@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Poker MVP</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    button { margin: 5px; padding: 10px 20px; }
+    #log { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; margin-top: 10px; background: #f7f7f7; }
+  </style>
+</head>
+<body>
+
+<h1>Poker Game (MVP Beta)</h1>
+
+<label>Player ID: <input id="playerId" /></label>
+<button onclick="connect()">Join Game</button>
+
+<div id="game" style="display:none;">
+  <h2>Game Controls</h2>
+  <button onclick="sendAction('CALL')">Call</button>
+  <button onclick="sendAction('FOLD')">Fold</button>
+  <button onclick="sendAction('CHECK')">Check</button>
+  <button onclick="sendAction('RAISE')">Raise</button>
+
+  <h3>Game Log</h3>
+  <div id="log"></div>
+</div>
+
+<script>
+  let socket;
+  let playerId;
+  const gameId = "room-123"; // temp gameId for now
+
+  function connect() {
+    playerId = document.getElementById('playerId').value;
+    if (!playerId) {
+      alert("Enter a player ID");
+      return;
+    }
+
+    socket = new WebSocket("ws://localhost:8080/ws");
+
+    socket.onopen = () => {
+      log("Connected to server");
+      const joinMessage = {
+        type: "JOIN_GAME",
+        gameId: gameId,
+        playerId: playerId
+      };
+      socket.send(JSON.stringify(joinMessage));
+      document.getElementById("game").style.display = "block";
+    };
+
+    socket.onmessage = (event) => {
+      log("Server: " + event.data);
+    };
+
+    socket.onerror = (error) => {
+      log("WebSocket error: " + error);
+    };
+
+    socket.onclose = () => {
+      log("Disconnected from server");
+    };
+  }
+
+  function sendAction(action) {
+    const message = {
+      type: action,
+      gameId: gameId,
+      playerId: playerId,
+      amount: action === "RAISE" ? 50 : undefined // optional raise amount
+    };
+    socket.send(JSON.stringify(message));
+    log("Sent: " + JSON.stringify(message));
+  }
+
+  function log(msg) {
+    const logDiv = document.getElementById("log");
+    logDiv.innerHTML += `<div>${msg}</div>`;
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+</script>
+
+</body>
+</html>
