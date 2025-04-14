@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 
 @Entity
 public class Game {
@@ -19,7 +20,7 @@ public class Game {
     private String gameState;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<GamePlayer> players;
+    private ArrayList<GamePlayer> players;
 
     // Getters and Setters
     public UUID getGameId() {
@@ -34,11 +35,11 @@ public class Game {
         this.gameState = gameState;
     }
 
-    public List<GamePlayer> getPlayers() {
+    public ArrayList<GamePlayer> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<GamePlayer> players) {
+    public void setPlayers(ArrayList<GamePlayer> players) {
         this.players = players;
     }
 
