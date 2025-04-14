@@ -6,7 +6,7 @@ import com.warroom.poker.model.GamePlayer;
 import com.warroom.poker.model.Deck;
 
 
-public class GameMethods
+public class DealingMethods
   {
  
     public static void deal(ArrayList<GamePlayer> players, Deck deck, int numPlayers)
@@ -16,7 +16,7 @@ public class GameMethods
         {
           for(int j = 0; j < 2; j++)
             {
-              players.get(i).addCard(deck.getDeck().get(0));
+              players.get(i).addCard(deck.getDeck().get(0).toString());
               deck.getDeck().remove(0);
             }
         }

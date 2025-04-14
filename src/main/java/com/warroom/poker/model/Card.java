@@ -8,6 +8,7 @@ public class Card
 {
   private String suit;
   private String value;
+  private String cardImagePath;
   private static final java.util.HashMap<String, Integer> cardValues = new java.util.HashMap<String, Integer>() {{
       put("2", 2);
       put("3", 3);
@@ -30,6 +31,12 @@ public class Card
   {
       this.suit = suit;
       this.value = value;
+      this.cardImagePath = cardImagePath;
+  }
+
+  public String getCardImagePath()
+  {
+    return this.cardImagePath;
   }
 
   public String getSuit()
@@ -55,14 +62,23 @@ public class Card
   }
 
   public static Card fromString(String cardString) {
-        if (cardString == null || cardString.length() != 2) {
+        if (cardString == null || cardString.length() < 2) {
             throw new IllegalArgumentException("Invalid card string: " + cardString);
         }
 
-        String value = cardString.substring(0, 1);
-        String suit = cardString.substring(1);
+        String value;
+        String suit;
 
-        return new Card(suit, value, cardImagePath);
+        // Handle "10" card case
+        if (cardString.length() == 3) {
+            value = cardString.substring(0, 2);
+            suit = cardString.substring(2);
+        } else {
+            value = cardString.substring(0, 1);
+            suit = cardString.substring(1);
+        }
+
+        return new Card(suit, value, value + suit + ".png");
     }
 
   public static final Comparator<Card> byValue = new Comparator<Card>() {

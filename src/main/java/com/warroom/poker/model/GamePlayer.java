@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -16,33 +18,46 @@ import jakarta.persistence.Transient;
 @Table(name="players")
 public class GamePlayer
   {
-    @Id
-    @Column(name = "player_id")
-    private UUID playerId;
+
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
+
     @ElementCollection
     private ArrayList<String> handStrings;
-    @Transient
+
+    @Id
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
     private UserProfile userProfile;
-    private int chips;
+
     private HandRank handRank;
     @Transient
     private ArrayList<Card> bestHand;
+
     private int currentBet;
-    private String userName;
     
-    public GamePlayer(UserProfile userProfile)
+    public GamePlayer(UserProfile userProfile, Game game)
     {
-      this.handStrings = new ArrayList<String>();
+      this.handStrings = new ArrayList<>();
       this.handRank = HandRank.HIGH_CARD;
       this.currentBet = 0;
-      this.playerId = userProfile.getPlayerId();
-      this.userName = userProfile.getUserName();
-      this.chips = userProfile.getChips();
+      this.userProfile = userProfile;
+      this.game = game;
     }
     public void addCard(String card)
     {
       handStrings.add(card);
     }
+
+    public ArrayList<Card> getHandAsCards(){
+      ArrayList<Card> cardObjects = new ArrayList<>();
+        for (String cardString : handStrings) {
+            cardObjects.add(Card.fromString(cardString));
+        }
+        return cardObjects;
+    }
+
     public ArrayList<String> getHand()
     {
       return handStrings;
@@ -67,7 +82,7 @@ public class GamePlayer
     
     public ArrayList<Card> getBestHand(){
 
-      return(this.bestHand);
+      return this.bestHand;
       
     }
     public static final Comparator<GamePlayer> byHandRank = new Comparator<GamePlayer>() {
@@ -85,15 +100,19 @@ public class GamePlayer
     }
     public UUID getPlayerId()
     {
-      return playerId;
-    }
-    
-    public void setChips(int chips){
-      this.chips = chips;
+      return userProfile.getPlayerId();
     }
     
     public int getChips(){ 
-      return chips; 
+      return userProfile.getChips(); 
+    }
+
+    public void setGame(Game game) {
+      this.game = game;
+    }
+
+    public Game getGame() {
+      return game;
     }
 
   }

@@ -14,7 +14,7 @@ public class CheckHands {
     public static ArrayList<Card> getCards(ArrayList<Card> tableCards, GamePlayer player) {
         ArrayList<Card> playerTableHand = new ArrayList<Card>();
         ArrayList<Card> allCards = new ArrayList<Card>();
-        allCards.addAll(player.getHand()); 
+        allCards.addAll(player.getHandAsCards()); 
         allCards.addAll(tableCards);
         
         for (int j = 0; j < allCards.size(); j++)
